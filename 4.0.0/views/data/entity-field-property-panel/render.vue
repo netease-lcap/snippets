@@ -6,7 +6,6 @@
           :node="property"
           placeholder="请输入属性名称"
           :disabled="
-            readonly ||
             property.loading ||
             property.generationRule !== 'manual' ||
             property.parentNode.loading ||
@@ -27,7 +26,6 @@
           placeholder="请输入属性标题"
           v-model="model.label"
           :disabled="
-            readonly ||
             property.loading ||
             property.parentNode.loading ||
             property.isDataTypeSetting ||
@@ -44,7 +42,6 @@
           placeholder="请输入属性描述"
           v-model="model.description"
           :disabled="
-            readonly ||
             property.loading ||
             property.parentNode.loading ||
             property.isDataTypeSetting ||
@@ -72,7 +69,6 @@
           :emptyable="false"
           :hasAnonymousStructure="true"
           :disabled="
-            readonly ||
             property.loading ||
             property.generationRule !== 'manual' ||
             property.parentNode.loading ||
@@ -98,7 +94,6 @@
           v-model="model.required"
           size="small"
           :disabled="
-            readonly ||
             property.loading ||
             property.parentNode.loading ||
             property.isDataTypeSetting ||
@@ -121,7 +116,6 @@
           v-model="model.relationship"
           clearable
           :disabled="
-            readonly ||
             property.loading ||
             property.parentNode.loading ||
             property.isDataTypeSetting ||
@@ -194,7 +188,6 @@
           <el-checkbox
             v-model="model.display.inTable"
             :disabled="
-              readonly ||
               property.loading ||
               property.parentNode.loading ||
               property.isDataTypeSetting ||
@@ -207,7 +200,6 @@
           <el-checkbox
             v-model="model.display.inFilter"
             :disabled="
-              readonly ||
               property.loading ||
               property.parentNode.loading ||
               property.isDataTypeSetting ||
@@ -221,7 +213,6 @@
           <el-checkbox
             v-model="model.display.inForm"
             :disabled="
-              readonly ||
               property.loading ||
               property.parentNode.loading ||
               property.isDataTypeSetting ||
@@ -235,7 +226,6 @@
           <el-checkbox
             v-model="model.display.inDetail"
             :disabled="
-              readonly ||
               property.loading ||
               property.parentNode.loading ||
               property.isDataTypeSetting ||
@@ -254,7 +244,6 @@
         :property="property"
         :key="'rules_' + property.name"
         :disabled="
-          readonly ||
           property.loading ||
           property.parentNode.loading ||
           property.isDataTypeSetting ||
@@ -338,13 +327,13 @@ const props = defineProps({
 const {
   /**
    * 表单节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   formRef,
   /**
    * 聚合 property 数据生成的对象
-   * 
+   *
    * @type {Vue.reactive<object>}
    */
   model,
@@ -354,32 +343,32 @@ const {
   validateRules,
   /**
    * 数据类型
-   * 
+   *
    * @type {Vue.ref<object>}
    */
   propertyTypeAnnotation,
   /**
    * 修改数据类型
-   * 
+   *
    * @function
    * @param event - event.value 对应修改后的数据类型
    */
   onChangeDatatype,
   /**
    * 是否应用正在发布
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isAppDeploying,
   /**
    * 修改必填
-   * 
+   *
    * @function
    */
   setRequired,
   /**
    * 暂无释义
-   * 
+   *
    * @function
    * @param property
    * @return boolean
@@ -387,19 +376,19 @@ const {
   isDataTypeEntity,
   /**
    * 实体属性数据类型
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   typeName,
   /**
    * 小数位数的校验错误信息
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   scaleErrorMsg,
   /**
    * 小数位数的范围
-   * 
+   *
    * @type {Vue.computed<object>}
    * @property min - 最小值
    * @property max - 最大值
@@ -407,19 +396,19 @@ const {
   scaleOption,
   /**
    * 是否禁用小数位数
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   decimalDisabled,
   /**
    * 修改小数位数
-   * 
+   *
    * @function
    */
   setScale,
   /**
    * 能否设置默认值
-   * 
+   *
    * @function
    * @param property - 实体属性
    * @return boolean
@@ -427,58 +416,64 @@ const {
   canSetDefaultValue,
   /**
    * 是否视图实体
-   * 
+   *
+   * @type {Vue.computed<boolean>}
+   */
+  IsError,
+  /**
+   * 是否默认值绑定有异常
+   *
    * @type {Vue.computed<boolean>}
    */
   isInViewEntity,
   /**
    * 设置在页面生成显示
-   * 
+   *
    * @function
    */
   onSetDisplay,
   /**
    * 能否设置关联属性
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   canSetReference,
   /**
    * 设置关联属性
-   * 
+   *
    * @function
    * @param property - 实体属性
    */
   onSaveReference,
   /**
    * 是否是模块（依赖库）
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isModule,
   /**
    * 是否来源于数据库表/excel
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isTableOrExcelOrigin,
   /**
    * 是否显示数据库高级设置
-   * 
+   *
    * 1.没有设置数据源
    * 2.实体是excel导入或者数据源反向导入
    * 3.权限实体（贤宇说一直是以LCAP开头来判断的）
    * 这3种情况不显示数据库设置
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   showDatabasetype,
   /**
    * 是否实体已经发布过并且是复合类型
-   * 
+   *
    * 1. 实体已经发布过，在app下的depEntities可以找到该实体
    * 2. 实体是复合类型：'Map', 'List'，或者typeKind是reference并且namespace是'entities', 'structures'
-   * 
+   *
    * @function
    * @param property - 实体属性
    * @return boolean
@@ -486,7 +481,7 @@ const {
   isPublishedComplexType,
   /**
    * 复合类型
-   * 
+   *
    * @function
    * @param property - 实体属性
    * @return boolean
@@ -494,13 +489,13 @@ const {
   isComplexType,
   /**
    * 数据库列名校验规则
-   * 
+   *
    * @type {Vue.computed<object>}
    */
   entityPropertyColumnNameRules,
   /**
    * 数据库列名输入框占位符
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   entityPropertyColumnNamePlaceholder,
