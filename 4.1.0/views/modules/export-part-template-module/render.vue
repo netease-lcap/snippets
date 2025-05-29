@@ -332,7 +332,7 @@
   </el-dialog>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { inject } from 'vue';
 
 const {
