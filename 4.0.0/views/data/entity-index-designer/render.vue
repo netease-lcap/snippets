@@ -547,6 +547,12 @@ const {
    * @type {Vue.computed<array>}
    */
   errorMsgs,
+  /**
+   * 属性列表
+   * 
+   * @type {Vue.computed<array>}
+   */
+  propertyList,
 } = inject('$context');
 </script>
 
