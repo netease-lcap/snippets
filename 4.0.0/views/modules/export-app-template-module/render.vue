@@ -117,36 +117,187 @@
 import { inject } from 'vue';
 
 const {
+  /**
+   * 表单节点引用
+   * 
+   * @type {Vue.ref<HTMLElement>}
+   */
   form,
+  /**
+   * 图片上传组件引用
+   * 
+   * @type {Vue.ref<HTMLElement>}
+   */
   uploadImgRef,
+  /**
+   * Mock数据模态框组件引用
+   * 
+   * @type {Vue.ref<HTMLElement>}
+   */
   mockDataModal,
+  /**
+   * 对话框是否可见
+   * 
+   * @type {Vue.ref<boolean>}
+   */
   visible,
+  /**
+   * 关闭对话框方法
+   * 
+   * @function
+   */
   close,
+  /**
+   * 表单数据模型
+   * 
+   * @type {object}
+   * @property {string} name - 模板名称
+   * @property {string} icon - 模板图标
+   * @property {Array} tags - 模板分类标签
+   * @property {string} version - 发布版本
+   * @property {string} description - 版本描述
+   */
   model,
+  /**
+   * 表单验证状态
+   * 
+   * @type {boolean}
+   */
   valid,
+  /**
+   * 图标变更回调方法
+   * 
+   * @function
+   * @param {string} icon - 新的图标值
+   */
   changeIcon,
+  /**
+   * 是否可编辑图标
+   * 
+   * @type {boolean}
+   */
   canEditIcon,
+  /**
+   * 表单验证规则
+   * 
+   * @type {object}
+   * @property {Array} name - 名称验证规则
+   * @property {Array} checkVersion - 版本验证规则
+   * @property {Array} description - 描述验证规则
+   */
   validateRules,
+  /**
+   * 是否已导出
+   * 
+   * @type {boolean}
+   */
   exported,
+  /**
+   * 输入法开始事件处理
+   * 
+   * @function
+   */
   onStart,
+  /**
+   * 输入法结束事件处理
+   * 
+   * @function
+   */
   onEnd,
+  /**
+   * 是否有操作权限
+   * 
+   * @type {boolean}
+   */
   checkPermission,
+  /**
+   * 打开资产配置方法
+   * 
+   * @function
+   */
   openAssetconfig,
+  /**
+   * 标签列表数据
+   * 
+   * @type {Array<object>}
+   * @property {string} id - 标签ID
+   * @property {string} tag - 标签名称
+   * @property {Array} child - 子标签列表
+   * @property {boolean} disable - 是否禁用
+   */
   taglist,
+  /**
+   * 选择标签回调方法
+   * 
+   * @function
+   * @param {Array} tags - 选中的标签值
+   */
   onSelectTags,
+  /**
+   * 上次导出的版本号
+   * 
+   * @type {string}
+   */
   lastVersion,
+  /**
+   * 上传文件列表
+   * 
+   * @type {Array<object>}
+   */
   files,
+  /**
+   * 上传成功回调方法
+   * 
+   * @function
+   * @param {object} response - 上传响应数据
+   */
   onUploadSuccess,
+  /**
+   * 是否需要预览
+   * 
+   * @type {boolean}
+   */
   needPreview,
+  /**
+   * 显示Mock数据模态框方法
+   * 
+   * @function
+   */
   showMockModal,
+  /**
+   * 提交表单方法
+   * 
+   * @function
+   */
   onSubmit,
+  /**
+   * 是否正在提交中
+   * 
+   * @type {boolean}
+   */
   submiting,
+  /**
+   * 当前角色回调方法
+   * 
+   * @function
+   * @param {string} role - 当前角色
+   */
   currentRole,
+  /**
+   * 获取Mock数据列表方法
+   * 
+   * @function
+   * @param {Array} list - Mock数据列表
+   */
   getMockList,
+  /**
+   * 设置表单验证状态方法
+   * 
+   * @function
+   * @param {boolean} valid - 验证状态
+   */
   setValid,
 } = inject('$context');
-
-console.log('form', form);
 </script>
 
 <style module>
