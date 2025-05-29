@@ -18,6 +18,8 @@
           :disabled="disabled"
           controls-position="right"
           :precision="['Integer', 'Long'].includes(typeName) || property?.typeAnnotation?.isComplexType()?0:undefined"
+          :min="item.min || -Infinity"
+          :max="item.max || Infinity"
           @change="handleChange(item.key)"
           @blur="handleNumberInputBlur(item.key)"
         >
@@ -110,38 +112,50 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { inject } from 'vue';
 
-const props = defineProps({
-  pos: String,
-  property: Object,
-  disabled: Boolean,
-  isViewEntity: Boolean,
-});
+const props = withDefaults(
+  defineProps<{
+    pos?: string;
+    property: any;
+    disabled: boolean;
+    isViewEntity: boolean;
+  }>(),
+  {
+    disabled: false,
+    isViewEntity: false,
+  }
+);
 
 const {
   /**
+   * 最大长度输入框的 ref
+   *
+   * @type {Vue.ref<HTMLInputElement>}
+   */
+   numInputRef,
+  /**
    * 是否不可编辑
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   uneditable,
   /**
    * 表单的编辑项
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   formItems,
   /**
    * 实体属性数据类型
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   typeName,
   /**
    * 报错等级
-   * 
+   *
    * @function
    * @param item - 规则项 和 错误信息
    * @return 'error' | 'warning' | ''
@@ -149,7 +163,7 @@ const {
   getRuleSeverityColor,
   /**
    * 聚合数据生成对象
-   * 
+   *
    * @type {Vue.reactive<object>}
    * @property min - 最小值
    * @property max - 最大值
@@ -159,21 +173,21 @@ const {
   model,
   /**
    * 保存 model 的属性值到节点上
-   * 
+   *
    * @function
    * @param key - 属性名
    */
   handleChange,
   /**
    * 数字输入框清空时不会触发change事件，需要增加blur处理
-   * 
+   *
    * @function
    * @param key - 属性名
    */
   handleNumberInputBlur,
   /**
    * 获取目标规则的错误
-   * 
+   *
    * @function
    * @param item - 目标规则
    * @return 目标规则上的错误
@@ -181,43 +195,49 @@ const {
   getRuleError,
   /**
    * 最大长度
-   * 
+   *
    * @type {Vue.ref<string>}
    */
   maxLengthValue,
   /**
    * 设置最大长度
-   * 
+   *
    * @function
    * @param event - 修改后的最大长度
    */
   onMaxLengthChange,
   /**
    * 预设最大长度选项
-   * 
+   *
    * @type {Vue.ref<array>}
    */
   maxLengthOptions,
   /**
    * 处理最大长度数字输入框的失焦事件
-   * 
+   *
    * @function
    * @param key - 规则字段
    */
   handleMaxlengthNumberInputBlur,
   /**
    * 最大长度
-   * 
+   *
    * @type {Vue.ref<number>}
    */
   MAX_LEN,
   /**
    * 最大长度数字输入框的点击事件
-   * 
+   *
    * @function
    */
   onMaxlengthNumberInputClick,
-} = inject('$context');
+  /**
+   * 最大长度输入框的错误信息
+   *
+   * @type {Vue.ref<string>}
+   */
+  maxErrorMsg,
+} = inject('$context') as any;
 </script>
 
 <style module>
