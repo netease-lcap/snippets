@@ -61,22 +61,113 @@
 import { inject } from 'vue';
 
 const {
+  /**
+   * 表单节点引用
+   * 
+   * @type {Vue.ref<HTMLElement>}
+   */
   form,
+  /**
+   * 搜索输入框节点引用
+   * 
+   * @type {Vue.ref<HTMLElement>}
+   */
   search,
+  /**
+   * 对话框是否可见
+   * 
+   * @type {Vue.ref<boolean>}
+   */
   visible,
+  /**
+   * 关闭对话框方法
+   * 
+   * @function
+   */
   close,
+  /**
+   * 是否仅H5模式
+   * 
+   * @type {boolean}
+   */
   onlyH5,
+  /**
+   * 表单验证规则
+   * 
+   * @type {Array}
+   */
   nameRules,
+  /**
+   * 表单数据模型
+   * 
+   * @type {object}
+   * @property {string} role - 角色名称
+   */
   model,
+  /**
+   * 选择标签回调方法
+   * 
+   * @function
+   * @param {string} event - 选中的标签值
+   */
   onSelectTags,
+  /**
+   * 角色列表数据
+   * 
+   * @type {Array<string>}
+   */
   rolelist,
+  /**
+   * 是否使用搜索功能
+   * 
+   * @type {boolean}
+   */
   useSearch,
+  /**
+   * 搜索框占位文本
+   * 
+   * @type {string}
+   */
   placeholder,
+  /**
+   * 搜索关键词
+   * 
+   * @type {string}
+   */
   searchKey,
+  /**
+   * 搜索关键词变化回调
+   * 
+   * @function
+   */
   onSearchChange,
+  /**
+   * Mock数据列表
+   * 
+   * @type {Array<object>}
+   * @property {string} path - 接口路径
+   * @property {string} method - 请求方法
+   * @property {string} mockData - Mock数据内容
+   */
   mockList,
+  /**
+   * 提交表单方法
+   * 
+   * @function
+   */
   submit,
+  /**
+   * 是否正在提交中
+   * 
+   * @type {boolean}
+   */
   submiting,
+  /**
+   * 设置是否使用搜索功能
+   * 
+   * @function
+   * @param {boolean} value - 是否启用搜索
+   */
   setUseSearch,
 } = inject('$context');
 </script>
