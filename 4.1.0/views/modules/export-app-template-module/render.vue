@@ -118,385 +118,185 @@ import { inject } from 'vue';
 
 const {
   /**
-   * 表单节点
-   * 用于表单验证和提交操作
+   * 表单节点引用
    * 
    * @type {Vue.ref<HTMLElement>}
    */
-  formRef,
-
+  form,
   /**
-   * 树形视图节点
-   * 用于树形数据的展示和操作
+   * 图片上传组件引用
    * 
    * @type {Vue.ref<HTMLElement>}
    */
-  treeViewRef,
-
+  uploadImgRef,
+  /**
+   * Mock数据模态框组件引用
+   * 
+   * @type {Vue.ref<HTMLElement>}
+   */
+  mockDataModal,
   /**
    * 对话框是否可见
-   * 控制导出模板对话框的显示状态
    * 
    * @type {Vue.ref<boolean>}
    */
   visible,
-
   /**
-   * 是否处于加载状态
-   * 控制数据加载时的loading状态
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  loading,
-
-  /**
-   * 是否为空数据状态
-   * 标识当前是否有可导出的数据
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  empty,
-
-  /**
-   * 是否处于提交状态
-   * 控制表单提交时的loading状态
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  submiting,
-
-  /**
-   * 是否编辑旧模板
-   * 标识当前是否为编辑已有模板
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  isEditOldTemp,
-
-  /**
-   * 是否可以编辑图标
-   * 控制模板图标的编辑权限
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  canEditIcon,
-
-  /**
-   * 是否自动勾选依赖项
-   * 控制是否自动选择相关依赖
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  autoCheckdepends,
-
-  /**
-   * 是否为空选中状态
-   * 标识是否未选择任何导出项
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  isEmptyChecked,
-
-  /**
-   * 是否有预选节点
-   * 标识是否存在预先选中的节点
-   * 
-   * @type {Vue.ref<boolean>}
-   */
-  hasPreCheckedNodes,
-
-  /**
-   * 是否有权限
-   * 控制用户的操作权限
-   * 
-   * @type {Vue.computed<boolean>}
-   */
-  checkPermission,
-
-  /**
-   * 表单数据对象
-   * 存储模板的基本信息
-   * 
-   * @type {Vue.reactive<object>}
-   * @property {string} icon - 模板图标
-   * @property {array} picture - 模板配图列表
-   * @property {array} tags - 模板分类标签
-   * @property {string} symbol - 模板标识
-   * @property {string} name - 模板名称
-   * @property {string} version - 模板版本
-   * @property {string} description - 模板描述
-   */
-  model,
-
-  /**
-   * 表单验证规则
-   * 定义表单字段的验证规则
-   * 
-   * @type {object}
-   */
-  validateRules,
-
-  /**
-   * 标签列表数据
-   * 存储可选的模板分类标签
-   * 
-   * @type {Vue.ref<array>}
-   */
-  taglist,
-
-  /**
-   * 历史记录列表
-   * 存储模板的历史版本记录
-   * 
-   * @type {Vue.ref<array>}
-   */
-  historyList,
-
-  /**
-   * 历史编辑列表
-   * 存储可编辑的历史版本列表
-   * 
-   * @type {Vue.ref<array>}
-   */
-  historyEditList,
-
-  /**
-   * 最后一项数据
-   * 存储当前选中的历史记录
-   * 
-   * @type {Vue.reactive<object>}
-   * @property {string} name - 模板名称
-   * @property {string} symbol - 模板标识
-   * @property {string} value - 模板值
-   * @property {string} text - 显示文本
-   */
-  lastItem,
-
-  /**
-   * 最后版本号
-   * 存储模板的最新版本号
-   * 
-   * @type {Vue.ref<string>}
-   */
-  lastVersion,
-
-  /**
-   * 树形数据
-   * 存储可导出的能力树形结构
-   * 
-   * @type {Vue.ref<array>}
-   */
-  treeData,
-
-  /**
-   * 树形属性配置
-   * 定义树形组件的属性配置
-   * 
-   * @type {object}
-   */
-  treeProps,
-
-  /**
-   * 默认展开的节点键值
-   * 控制树形组件默认展开的节点
-   * 
-   * @type {Vue.ref<array>}
-   */
-  defaultExpandedKeys,
-
-  /**
-   * 选中的节点值
-   * 存储当前选中的节点
-   * 
-   * @type {Vue.ref<array>}
-   */
-  checkedValues,
-
-  /**
-   * 关闭对话框
-   * 关闭导出模板对话框
+   * 关闭对话框方法
    * 
    * @function
    */
   close,
-
   /**
-   * 改变图标
-   * 更新模板图标
+   * 表单数据模型
+   * 
+   * @type {object}
+   * @property {string} name - 模板名称
+   * @property {string} icon - 模板图标
+   * @property {Array} tags - 模板分类标签
+   * @property {string} version - 发布版本
+   * @property {string} description - 版本描述
+   */
+  model,
+  /**
+   * 表单验证状态
+   * 
+   * @type {boolean}
+   */
+  valid,
+  /**
+   * 图标变更回调方法
    * 
    * @function
-   * @param {string} item - 新的图标值
+   * @param {string} icon - 新的图标值
    */
   changeIcon,
-
   /**
-   * 编辑为新模板
-   * 将当前模板编辑为新模板
+   * 是否可编辑图标
+   * 
+   * @type {boolean}
+   */
+  canEditIcon,
+  /**
+   * 表单验证规则
+   * 
+   * @type {object}
+   * @property {Array} name - 名称验证规则
+   * @property {Array} checkVersion - 版本验证规则
+   * @property {Array} description - 描述验证规则
+   */
+  validateRules,
+  /**
+   * 是否已导出
+   * 
+   * @type {boolean}
+   */
+  exported,
+  /**
+   * 输入法开始事件处理
    * 
    * @function
-   * @param {Event} e - 事件对象
    */
-  canEditToNewTemp,
-
+  onStart,
   /**
-   * 跳转到资产中心
-   * 跳转到资产中心页面
+   * 输入法结束事件处理
    * 
    * @function
    */
-  goAssetCenterSeg,
-
+  onEnd,
   /**
-   * 打开资产配置
-   * 打开资产配置对话框
+   * 是否有操作权限
+   * 
+   * @type {boolean}
+   */
+  checkPermission,
+  /**
+   * 打开资产配置方法
    * 
    * @function
    */
   openAssetconfig,
-
   /**
-   * 选择模板
-   * 选择历史模板版本
+   * 标签列表数据
    * 
-   * @function
-   * @param {string} symbol - 模板标识
+   * @type {Array<object>}
+   * @property {string} id - 标签ID
+   * @property {string} tag - 标签名称
+   * @property {Array} child - 子标签列表
+   * @property {boolean} disable - 是否禁用
    */
-  onSelectSegmentTemp,
-
+  taglist,
   /**
-   * 选择标签
-   * 更新模板分类标签
+   * 选择标签回调方法
    * 
    * @function
-   * @param {array} item - 选中的标签列表
+   * @param {Array} tags - 选中的标签值
    */
   onSelectTags,
-
   /**
-   * 切换历史记录
-   * 切换到指定的历史版本
+   * 上次导出的版本号
+   * 
+   * @type {string}
+   */
+  lastVersion,
+  /**
+   * 上传文件列表
+   * 
+   * @type {Array<object>}
+   */
+  files,
+  /**
+   * 上传成功回调方法
    * 
    * @function
-   * @param {object} item - 历史记录项
+   * @param {object} response - 上传响应数据
    */
-  toggleHistory,
-
+  onUploadSuccess,
   /**
-   * 提交表单
-   * 提交模板表单数据
+   * 是否需要预览
+   * 
+   * @type {boolean}
+   */
+  needPreview,
+  /**
+   * 显示Mock数据模态框方法
+   * 
+   * @function
+   */
+  showMockModal,
+  /**
+   * 提交表单方法
    * 
    * @function
    */
   onSubmit,
-
   /**
-   * 检查变更
-   * 处理树形节点选中状态变更
+   * 是否正在提交中
+   * 
+   * @type {boolean}
+   */
+  submiting,
+  /**
+   * 当前角色回调方法
    * 
    * @function
-   * @param {object} node - 节点对象
-   * @param {boolean} checked - 是否选中
+   * @param {string} role - 当前角色
    */
-  onCheckChange,
-
+  currentRole,
   /**
-   * 设置目录展开图标
-   * 更新目录展开状态的图标
+   * 获取Mock数据列表方法
    * 
    * @function
-   * @param {object} node - 节点对象
+   * @param {Array} list - Mock数据列表
    */
-  setDirectoryExpandIcon,
-
+  getMockList,
   /**
-   * 设置目录折叠图标
-   * 更新目录折叠状态的图标
+   * 设置表单验证状态方法
    * 
    * @function
-   * @param {object} node - 节点对象
+   * @param {boolean} valid - 验证状态
    */
-  setDirectoryCollapseIcon,
-
-  /**
-   * 获取节点引用
-   * 获取节点的依赖引用关系
-   * 
-   * @function
-   * @param {object} node - 节点对象
-   * @returns {array} 引用列表
-   */
-  getNodeReferences,
-
-  /**
-   * 获取图标
-   * 获取节点对应的图标
-   * 
-   * @function
-   * @param {object} node - 节点对象
-   * @returns {string} 图标名称
-   */
-  getIcon,
-
-  /**
-   * 获取文本名称
-   * 获取节点的显示文本
-   * 
-   * @function
-   * @param {object} node - 节点对象
-   * @returns {string} 文本名称
-   */
-  getTextName,
-
-  /**
-   * 获取选中状态
-   * 获取节点的选中状态文本
-   * 
-   * @function
-   * @param {object} node - 节点对象
-   * @returns {string} 选中状态
-   */
-  getCheckedState,
-
-  /**
-   * 全选操作
-   * 处理节点的全选/取消全选
-   * 
-   * @function
-   * @param {Event} e - 事件对象
-   * @param {object} node - 节点对象
-   */
-  onCheckAll,
-
-  /**
-   * 判断是否为图片
-   * 判断图标是否为图片类型
-   * 
-   * @function
-   * @param {string} icon - 图标值
-   * @param {string} connectorKind - 连接器类型
-   * @returns {boolean} 是否为图片
-   */
-  isImage,
-
-  /**
-   * 获取连接器设置
-   * 获取连接器的配置信息
-   * 
-   * @function
-   * @param {object} node - 节点对象
-   * @returns {object} 连接器设置
-   */
-  getConnectorSetting,
-
-  /**
-   * 获取连接器包装图标
-   * 获取连接器的包装图标
-   * 
-   * @function
-   * @param {object} node - 节点对象
-   * @returns {string} 图标
-   */
-  getConnectorWrapperIcon,
+  setValid,
 } = inject('$context');
 </script>
 
