@@ -122,6 +122,12 @@ const props = defineProps({
 
 const {
   /**
+   * 最大长度输入框的 ref
+   *
+   * @type {Vue.ref<HTMLInputElement>}
+   */
+   numInputRef,
+  /**
    * 是否不可编辑
    * 
    * @type {Vue.computed<boolean>}
