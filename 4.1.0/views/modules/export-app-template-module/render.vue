@@ -86,7 +86,7 @@
               </s-uploader>
             </el-form-item>
             <el-form-item label="下载选择：" :class="$style.formlabelinline" for="none">
-                <el-radio-group v-model="needPreview">
+                <el-radio-group :model-value="needPreview" @change="setNeedPreview($event)">
                     <el-radio :value="true">下载模板+资产中心预览效果</el-radio>
                     <el-radio :value="false">仅下载模板</el-radio>
                 </el-radio-group>
@@ -297,6 +297,13 @@ const {
    * @param {boolean} valid - 验证状态
    */
   setValid,
+  /**
+   * 设置是否需要预览方法
+   * 
+   * @function
+   * @param {boolean} value - 是否需要预览
+   */
+  setNeedPreview,
 } = inject('$context');
 </script>
 
