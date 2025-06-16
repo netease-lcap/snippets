@@ -172,7 +172,7 @@
         :parent-node="property"
         :node="property.defaultValue"
         :class="{ [$style.typeError]: IsError }"
-        :disabled="isInViewEntity"
+        :disabled="isModule || isInViewEntity"
       ></s-attr-input>
       </s-form-item>
 
@@ -310,7 +310,7 @@
           <el-input
             :placeholder="entityPropertyColumnNamePlaceholder"
             v-model="model.columnName"
-            :disabled="isTableOrExcelOrigin || isInViewEntity"
+            :disabled="isTableOrExcelOrigin || isModule || isInViewEntity"
             @change="slotProps.blurChange"
             @keyup.enter.stop="$event.target.blur()"
           ></el-input>
