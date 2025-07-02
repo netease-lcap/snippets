@@ -486,8 +486,8 @@
         trigger="click"
         ref="menuPopper"
         :popper-options="popperOptions"
-        v-if="menuSelectedItem && popperExistMap[menuSelectedItem.id]"
-        v-model:visible="popperVisibleMap[menuSelectedItem && menuSelectedItem.id]"
+        v-if="menuSelectedItem && popperExistMap[getPopperId(menuSelectedItem)]"
+        v-model:visible="popperVisibleMap[getPopperId(menuSelectedItem)]"
         :virtual-ref="triggerRef"
         :placement="placement"
         :show-arrow="false"
@@ -685,57 +685,57 @@ const props = defineProps({
 const {
   /**
    * 名称输入框节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   nameEditor,
   /**
    * 标题输入框节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   labelEditor,
   /**
    * 描述输入框节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   descriptionEditor,
   /**
    * 表格节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   tableviewRef,
   /**
    * 数据库视图导入生成的实体
    * entity 的 origin 属性是否是 view
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isViewEntity,
   /**
    * 添加实体属性
-   * 
+   *
    * @function
    */
   addItem,
   /**
    * 生成移除按钮的提示
-   * 
+   *
    * @function
    * @return string
    */
   getRemoveTooltip,
   /**
    * 表格选中的行元素
-   * 
+   *
    * @type {Vue.computed<object>}
    */
   selectedItem,
   /**
    * 是否是官方实体属性
-   * 
+   *
    * @function
    * @param entityProperty - 实体属性
    * @return boolean
@@ -743,57 +743,57 @@ const {
   isOfficalEntityProperty,
   /**
    * 移除实体索引
-   * 
+   *
    * @function
    * @param item - 需要删除的行元素
    */
   removeItem,
   /**
    * 表格的渲染数据
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   renderList,
   /**
    * 上移当前选中的实体索引
-   * 
+   *
    * @function
    */
   moveUpItem,
   /**
    * 下移当前选中的实体索引
-   * 
+   *
    * @function
    */
   moveDownItem,
   /**
    * 表格高度
-   * 
+   *
    * @type {Vue.computed<number>}
    */
   tableHeight,
   /**
    * 设置表单列的样式
-   * 
+   *
    * @function
    */
   setRowClassName,
   /**
    * 右键选中表格行元素
-   * 
+   *
    * @function
    */
   onContextMenuRow,
   /**
    * 选中行元素时触发
-   * 
+   *
    * @function
    * @param item - 行元素
    */
   onSelectRowWithDataType,
   /**
    * 拖拽调整表格列宽度
-   * 
+   *
    * @function
    * @param newWidth - 新宽度
    * @param oldWidth - 旧宽度
@@ -802,14 +802,14 @@ const {
   handleDragend,
   /**
    * 是否禁止编辑行元素
-   * 
+   *
    * @function
    * @param item - 行元素
    */
   getDisable,
   /**
    * 设置表格列元素编辑状态
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param name - 属性名称
@@ -818,16 +818,16 @@ const {
   onSetItemEdit,
   /**
    * Tab 键跳转切换下一个属性
-   * 
+   *
    * @function
-   * @param event - 原生键盘事件 
+   * @param event - 原生键盘事件
    * @param item - 行元素
    * @param name - 属性名称
    */
   onKeyUp,
   /**
    * 名称输入框失焦并保存数据
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param name - 需要保存的名称
@@ -839,35 +839,35 @@ const {
   errorScrollIntoView,
   /**
    * 存在错误
-   * 
+   *
    * @type {Vue.ref<boolean>}
    */
   hasInvalid,
   /**
    * 显示输入框的提示
-   * 
+   *
    * @type {Vue.ref<string>}
    */
   tooltipOpened,
   /**
    * 属性名，暂时存储属性名，用于输入框输入等操作
-   * 
+   *
    * @type {Vue.ref<string>}
    */
   itemNameValue,
   /**
    * 输入框获取焦点时触发
-   * 
+   *
    * 1. 设置tooltipOpened的值
    * 2. 设置itemNameValue
-   * 
+   *
    * @function
    * @param item - 当前行元素
    */
   onFocusName,
   /**
    * 标题输入框失焦并保存数据
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param name - 需要保存的标题
@@ -875,16 +875,16 @@ const {
   onBlurLabel,
   /**
    * 是否应用正在发布
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isAppDeploying,
   /**
    * 是否实体已经发布过并且是复合类型
-   * 
+   *
    * 1. 实体已经发布过，在app下的depEntities可以找到该实体
    * 2. 实体是复合类型：'Map', 'List'，或者typeKind是reference并且namespace是'entities', 'structures'
-   * 
+   *
    * @function
    * @param property - 实体属性
    * @return boolean
@@ -892,7 +892,7 @@ const {
   isPublishedComplexType,
   /**
    * 数据类型的标题
-   * 
+   *
    * @function
    * @param item - 行元素
    * @return string
@@ -900,7 +900,7 @@ const {
   showDatatype,
   /**
    * 双击编辑数据类型输入框
-   * 
+   *
    * @function
    * @param item - 行元素
    * @param event - 原生事件
@@ -908,28 +908,28 @@ const {
   onDblClickDatatype,
   /**
    * 获取可选类型
-   * 
+   *
    * @function
    * @return 可选类型
    */
   getDataTypeList,
   /**
    * 失焦时取消当前行元素编辑状态
-   * 
+   *
    * @function
    * @param item - 行元素
    */
   handleBlur,
   /**
    * 修改实体属性类型
-   * 
+   *
    * @function
    * @param event - event.value 实际使用数据
    */
   onChangeDatatype,
   /**
    * 是否属于官方实体
-   * 
+   *
    * @function
    * @param entityProperty - 实体属性
    * @return boolean
@@ -937,7 +937,7 @@ const {
   isOfficalEntity,
   /**
    * 复合类型
-   * 
+   *
    * @function
    * @param property - 实体属性
    * @return boolean
@@ -945,7 +945,7 @@ const {
   isComplexType,
   /**
    * 修改是否必填
-   * 
+   *
    * @function
    * @param item - 行元素
    * @param event - el-checkbox 原生事件
@@ -953,7 +953,7 @@ const {
   requireInput,
   /**
    * 能否设置默认值
-   * 
+   *
    * @function
    * @param property - 实体属性
    * @return boolean
@@ -961,7 +961,7 @@ const {
   canSetDefaultValue,
   /**
    * 对应节点是否有错误
-   * 
+   *
    * @function
    * @param node - 节点
    * @return boolean
@@ -969,13 +969,13 @@ const {
   IsError,
   /**
    * 显示在表格
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   inTable,
   /**
    * 全部勾选或者取消全部勾选
-   * 
+   *
    * @function
    * @param event - el-checkhox 原生事件
    * @param key - 属性名
@@ -983,7 +983,7 @@ const {
   toggleSelectAll,
   /**
    * 设置显示属性
-   * 
+   *
    * @function
    * @param item - 行元素
    * @param event - el-checkhox 原生事件
@@ -992,19 +992,19 @@ const {
   setDisplay,
   /**
    * 显示在筛选
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   inFilter,
   /**
    * 显示在表格
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   inForm,
   /**
    * 显示在详情
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   inDetail,
@@ -1014,7 +1014,7 @@ const {
   popperOptions,
   /**
    * 右键菜单选中项
-   * 
+   *
    * @type {Vue.ref<object>}
    */
   menuSelectedItem,
@@ -1043,39 +1043,43 @@ const {
    */
   onMenuClick,
   /**
+   * 菜单对应节点唯一标识函数
+   */
+  getPopperId,
+  /**
    * 菜单-查找引用
-   * 
+   *
    * @function
    */
   onMenuFindUsage,
   /**
    * 菜单-删除
-   * 
+   *
    * @function
    */
   onMenuDelete,
   /**
    * 实体属性数据类型
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   typeName,
   /**
    * 小数位数的校验错误信息
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   scaleErrorMsg,
   /**
    * 属性的响应式数据
-   * 
+   *
    * @type {Vue.reactive<object>}
    * @property scale - 小数位数
    */
   model,
   /**
    * 小数位数的范围
-   * 
+   *
    * @type {Vue.computed<object>}
    * @property min - 最小值
    * @property max - 最大值
@@ -1083,7 +1087,7 @@ const {
   scaleOption,
   /**
    * 是否禁用小数位数
-   * 
+   *
    * @function
    * @param item - 行元素
    * @return boolean
@@ -1091,25 +1095,25 @@ const {
   decimalDisabled,
   /**
    * 修改小数位数
-   * 
+   *
    * @function
    */
   setScale,
   /**
    * 关联属性
-   * 
+   *
    * @type {Vue.ref<string>}
    */
   entityReference,
   /**
    * 类型列表
-   * 
+   *
    * @type {Vue.ref<array>}
    */
   dataTypeList,
   /**
    * 关联实体存在错误
-   * 
+   *
    * @function
    * @param node - 节点
    * @return boolean
@@ -1117,40 +1121,40 @@ const {
   isReleationEntityError,
   /**
    * 设置关联属性
-   * 
+   *
    * @function
    * @param event - event.value 表示实际数据
    */
   onSaveReference,
   /**
    * 清除关联属性
-   * 
+   *
    * @function
    */
   onClearReference,
   /**
    * 设置关联属性实体记录删除规则
-   * 
+   *
    * @function
    * @param event - 选中事件对象
    */
   setDeleteRule,
   /**
    * 设置错误信息
-   * 
+   *
    * @function
    * @param errorMsgs - 错误信息
    */
   changeErrorMsgs,
   /**
    * 是否来源于数据库表/excel
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isTableOrExcelOrigin,
   /**
    * 描述输入框失焦并保存数据
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param name - 需要保存的描述
@@ -1158,42 +1162,42 @@ const {
   onBlurDescription,
   /**
    * 是否显示数据库高级设置
-   * 
+   *
    * 1.没有设置数据源
    * 2.实体是excel导入或者数据源反向导入
    * 3.权限实体（贤宇说一直是以LCAP开头来判断的）
    * 这3种情况不显示数据库设置
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   showDatabasetype,
   /**
    * 实体在同步数据源时产生的错误信息
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   sourceSyncErrMsgs,
   /**
    * 错误信息
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   errorMsgs,
   /**
    * 数据库列名校验规则
-   * 
+   *
    * @type {Vue.computed<object>}
    */
   entityPropertyColumnNameRules,
   /**
    * 数据库列名输入框占位符
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   entityPropertyColumnNamePlaceholder,
   /**
    * 生成名称校验规则
-   * 
+   *
    * @function
    * @param node - 节点
    * @return 名称校验规则
@@ -1201,13 +1205,13 @@ const {
   getEntityPropertyRules,
   /**
    * 名称输入框占位符
-   * 
+   *
    * @type {Vue.computed<string>}
    */
   entityPropertyPlaceholder,
   /**
    * 设置选中行的数据类型
-   * 
+   *
    * @function
    * @param value - 数据类型
    */
