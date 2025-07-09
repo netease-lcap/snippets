@@ -2,7 +2,7 @@
   <el-dialog
     v-model="visible"
     class="s-export-part-template-modal"
-    width="800px"
+    width="824px"
     align-center
     destroy-on-close
     append-to-body
@@ -21,18 +21,18 @@
       </el-tooltip>
     </template>
     <el-container>
-      <el-aside :class="$style.left" style="width: 400px; height: 478px; overflow: scroll">
+      <el-aside :class="$style.left" style="width: 412px; height: 478px; overflow: scroll">
         <el-form ref="formRef" label-position="top" :model="model" require-asterisk-position="right" @validate="formValid = $event.valid">
           <div :class="$style.symbolbox">
-            <s-upload-icon v-if="!isEditOldTemp" @changeIcon="changeIcon" :can-edit="canEditIcon" :prop-icon="model.icon"> </s-upload-icon>
-            <el-form-item style="position: relative" required :rules="isEditOldTemp ? {} : validateRules.symbol" prop="symbol" for="none">
+            <s-upload-img v-if="!isEditOldTemp" ref="uploadImgRef" @changeIcon="changeIcon" :can-edit="canEditIcon" :prop-icon="model.icon" :cropper-box-width="285" :cropper-box-height="130"> </s-upload-img>
+            <el-form-item style="position: relative;margin-bottom:0; width: 100%" required :rules="isEditOldTemp ? {} : validateRules.symbol" prop="symbol" for="none">
               <template #label>
                 <span>{{ isEditOldTemp ? '模板名称（标识）' : '模板标识' }}</span>
                 <div :class="$style.histroy" v-if="historyList.length > 0 && isEditOldTemp">
                   <el-link @click="canEditToNewTemp">发布为新模板</el-link>
                 </div>
 
-                <div :class="$style.histroy" style="left: 203px" v-else-if="historyList.length > 0 && !isEditOldTemp">
+                <div :class="$style.histroy" v-else-if="historyList.length > 0 && !isEditOldTemp">
                   <el-popover width="auto" trigger="click">
                     <template #reference><el-link>发布历史</el-link></template>
                     <div :class="$style.menu">
@@ -62,11 +62,9 @@
                 :disabled="loading"
                 maxlength-message="标识最长100字符"
                 placeholder="请输入"
-                style="width: 252px"
               ></el-input>
               <el-select
                 v-else
-                style="width: 336px"
                 placeholder="请选择模板历史"
                 v-model="lastItem.symbol"
                 :data="historyEditList"
@@ -96,7 +94,7 @@
             <el-tree-select
               class="treetag"
               v-model="model.tags"
-              style="width: 336px"
+              style="width: 100%"
               :data="taglist"
               multiple
               :render-after-expand="false"
@@ -654,6 +652,9 @@ const {
 .right {
   padding-bottom: 0;
 }
+.left {
+  padding-right: 12px;
+}
 .topTitle {
   display: inline-flex;
   justify-content: space-between;
@@ -769,13 +770,15 @@ const {
 }
 .symbolbox {
   display: flex;
-  gap: 20px;
+  gap: 8px;
+  margin-bottom: 16px;
+  align-items: end;
 }
 .histroy {
   position: absolute;
   top: 0;
-  left: 263px;
   white-space: nowrap;
+  right: 0;
 }
 .tagcategory {
   position: absolute;
