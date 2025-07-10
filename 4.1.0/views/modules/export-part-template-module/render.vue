@@ -630,6 +630,12 @@ const {
    * @returns {string} 图标
    */
   getConnectorWrapperIcon,
+  /**
+   * 上传图标引用
+   * 
+   * @type {Vue.ref<object>}
+   */
+  uploadImgRef
 } = inject('$context');
 </script>
 
