@@ -302,8 +302,8 @@
         trigger="click"
         ref="menuPopper"
         :popper-options="popperOptions"
-        v-if="menuSelectedItem && popperExistMap[menuSelectedItem.id]"
-        v-model:visible="popperVisibleMap[menuSelectedItem && menuSelectedItem.id]"
+        v-if="menuSelectedItem && popperExistMap[getPopperId(menuSelectedItem)]"
+        v-model:visible="popperVisibleMap[getPopperId(menuSelectedItem)]"
         :virtual-ref="triggerRef"
         :placement="placement"
         :show-arrow="false"
@@ -344,81 +344,81 @@ const props = defineProps({
 const {
   /**
    * 名称输入框节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   nameEditor,
   /**
    * 属性输入框节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   propertyIdsEditor,
   /**
    * 描述输入框节点
-   * 
+   *
    * @type {Vue.ref<HTMLElement>}
    */
   descriptionEditor,
   /**
    * 数据库视图导入生成的实体
    * entity 的 origin 属性是否是 view
-   * 
+   *
    * @type {Vue.computed<boolean>}
    */
   isViewEntity,
   /**
    * 添加实体索引
-   * 
+   *
    * @function
    */
   addItem,
   /**
    * 表格选中的行元素
-   * 
+   *
    * @type {Vue.computed<object>}
    */
   selectedItem,
   /**
    * 移除实体索引
-   * 
+   *
    * @function
    * @param item - 需要删除的行元素
    */
   removeItem,
   /**
    * 表格的渲染数据
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   renderList,
   /**
    * 上移当前选中的实体索引
-   * 
+   *
    * @function
    */
   moveUp,
   /**
    * 设置表单列的样式
-   * 
+   *
    * @function
    */
   setRowClassName,
   /**
    * 右键选中表格行元素
-   * 
+   *
    * @function
    */
   onContextMenuRow,
   /**
    * 选中表格行元素
-   * 
+   *
    * @function
    */
   onRowClick,
   /**
    * 名称输入框失焦并保存数据
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param name - 需要保存的名称
@@ -430,13 +430,13 @@ const {
   errorScrollIntoView,
   /**
    * 存在错误
-   * 
+   *
    * @type {Vue.ref<boolean>}
    */
   hasInvalid,
   /**
    * 设置表格列元素编辑状态
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param name - 属性名称
@@ -445,23 +445,23 @@ const {
   onSetItemEdit,
   /**
    * Tab 键跳转切换下一个属性
-   * 
+   *
    * @function
-   * @param event - 原生键盘事件 
+   * @param event - 原生键盘事件
    * @param item - 行元素
    * @param name - 属性名称
    */
   onKeyUp,
   /**
    * 是否禁止编辑行元素
-   * 
+   *
    * @function
    * @param item - 行元素
    */
   getDisable,
   /**
    * 设置propertyNames
-   * 
+   *
    * @function
    * @param value - 需要设置的propertyNames
    * @param item - 行元素
@@ -469,7 +469,7 @@ const {
   setIndexPropertyIds,
   /**
    * 下拉框出现/隐藏时触发
-   * 
+   *
    * @function
    * @param value - 需要设置的propertyNames
    * @param item - 行元素
@@ -477,7 +477,7 @@ const {
   onVisibleChangePropertyIds,
   /**
    * 双击编辑属性输入框
-   * 
+   *
    * @function
    * @param item - 行元素
    * @param event - 原生事件
@@ -485,7 +485,7 @@ const {
   onDblClickPropertyIds,
   /**
    * 编辑是否唯一
-   * 
+   *
    * @function
    * @param item - 行元素
    * @param unique - 是否唯一
@@ -493,7 +493,7 @@ const {
   setUnique,
   /**
    * 描述输入框失焦并保存数据
-   * 
+   *
    * @function
    * @param item - 当前行元素
    * @param description - 需要保存的描述
@@ -505,7 +505,7 @@ const {
   popperOptions,
   /**
    * 右键菜单选中项
-   * 
+   *
    * @type {Vue.ref<object>}
    */
   menuSelectedItem,
@@ -517,6 +517,10 @@ const {
    * 项对应的右键菜单是否显示
    */
   popperVisibleMap,
+  /**
+   * 项对应的右键菜单对应节点唯一标识函数
+   */
+  getPopperId,
   /**
    * 右键菜单的触发节点
    */
@@ -531,25 +535,25 @@ const {
   onMenuPopperHide,
   /**
    * 菜单-查找引用
-   * 
+   *
    * @function
    */
   onMenuFindUsage,
   /**
    * 菜单-删除
-   * 
+   *
    * @function
    */
   onMenuDelete,
   /**
    * 错误信息
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   errorMsgs,
   /**
    * 属性列表
-   * 
+   *
    * @type {Vue.computed<array>}
    */
   propertyList,
