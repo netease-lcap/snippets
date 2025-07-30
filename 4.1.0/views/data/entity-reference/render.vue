@@ -12,6 +12,7 @@
       value-field="keyword"
       :more-children-fields="['properties']"
       :value="value"
+      :data-source="[entityNode]"
       :filter-fields="filterFields"
       :class="[$style.tree, value && $style.hideIcon, error && $style.typeError]"
       :disabled="disabled || !entityNode.children.length"
@@ -19,12 +20,6 @@
       @select="onInputSelect($event)"
       @before-select="onBeforeSelect($event)"
     >
-      <u-tree-view-node
-        :node="entityNode"
-        text="实体"
-        children-field="children"
-        expanded
-      ></u-tree-view-node>
 
       <template #text="{ node, selected, expanded }">
         <div :class="$style.nodeText" v-if="node.concept === 'Entity'">
