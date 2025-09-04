@@ -399,6 +399,12 @@ const {
    */
   moveUp,
   /**
+   * 下移当前选中的实体索引
+   *
+   * @function
+   */
+  moveDown,
+  /**
    * 设置表单列的样式
    *
    * @function
