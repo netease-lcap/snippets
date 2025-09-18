@@ -162,10 +162,10 @@
                 @dblclick="onSetItemEdit(item, 'name', true)"
                 tabindex="0"
                 @keyup="onKeyUp($event, item, 'name')"
-                :title="item.naslNode.name"
+                :title="item.name"
               >
                 <div :class="$style.text">
-                  <span :class="$style.textContent">{{ item.naslNode.name }}</span>
+                  <span>{{ item.naslNode.name }}</span>
                   <s-others-icon
                     name="edit"
                     :class="[$style.iconBase, $style.iconEdit]"
@@ -214,7 +214,6 @@
                 @dblclick="onDblClickPropertyIds(item, $event)"
                 tabindex="0"
                 @keyup="onKeyUp($event, item, 'propertyIds')"
-                :title="item.naslNode?.propertyNames?.toString()"
               >
                 <div :class="$style.text">
                   <span :class="$style.textContent">{{
@@ -399,12 +398,6 @@ const {
    * @function
    */
   moveUp,
-  /**
-   * 下移当前选中的实体索引
-   *
-   * @function
-   */
-  moveDown,
   /**
    * 设置表单列的样式
    *
