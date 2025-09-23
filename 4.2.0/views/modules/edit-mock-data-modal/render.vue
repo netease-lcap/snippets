@@ -25,7 +25,7 @@
           <span>接口数据</span>
           <s-others-icon @click="setUseSearch(true)" v-show="!useSearch" name="search" :class="$style.searchIcon">
           </s-others-icon>
-          <el-input v-show="useSearch" ref="search" prefix="search" clearable :placeholder="placeholder"
+          <el-input v-show="useSearch" ref="search" clearable :placeholder="placeholder"
             v-model="searchKey" @change="onSearchChange" style="width:204px;height:28px">
             <template #prefix>
               <s-others-icon name="search" :class="$style.searchIcon"></s-others-icon>
