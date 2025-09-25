@@ -70,7 +70,7 @@
 
             <el-form-item label="模板配图" layout="block" for="none">
               <s-uploader
-                v-model:file-list="files"
+                :file-list="files"
                 multiple
                 list-type="picture"
                 drag :on-success="onUploadSuccess"
@@ -78,6 +78,7 @@
                 accept="image/png, image/jpg, image/jpeg, image/gif, image/bmp"
                 :limit="10"
                 :class="$style.upload"
+                @update:fileList="setPictureFiles"
               >
                 <div :class="$style.uploadArea">
                   <s-others-icon name="upload" :class="$style.uploadIcon"></s-others-icon>
@@ -304,6 +305,13 @@ const {
    * @param {boolean} value - 是否需要预览
    */
   setNeedPreview,
+  /**
+   * 设置图片文件列表方法
+   * 
+   * @function
+   * @param {Array} files - 图片文件列表
+   */
+  setPictureFiles,
 } = inject('$context');
 </script>
 
