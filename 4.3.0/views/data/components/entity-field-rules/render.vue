@@ -45,6 +45,7 @@
           placeholder="请输入最小长度（默认为 0）"
           :min="0"
           :max="model.maxLength || MAX_LEN"
+          :precision="0"
           v-model="model.minLength"
           :disabled="disabled"
           controls-position="right"
@@ -92,6 +93,7 @@
         <el-input-number
           v-if="maxLengthValue === ''"
           ref="numInputRef"
+          :precision="0"
           v-model="model.maxLength"
           placeholder="请输入最大长度"
           controls-position="right"
