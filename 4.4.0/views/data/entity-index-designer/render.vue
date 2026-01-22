@@ -361,6 +361,12 @@ const {
    * @type {Vue.ref<HTMLElement>}
    */
   descriptionEditor,
+    /**
+   * 表格节点
+   *
+   * @type {Vue.ref<HTMLElement>}
+   */
+  tableviewRef,
   /**
    * 数据库视图导入生成的实体
    * entity 的 origin 属性是否是 view
