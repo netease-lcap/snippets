@@ -2,19 +2,29 @@
   <el-scrollbar>
     <el-form
       ref="formRef"
-      style="padding: 16px 0px 16px 0px;"
+      style="padding: 16px 0;"
       label-position="top"
       hide-required-asterisk
       :model="annotaions"
       @submit.prevent
     >
+      <s-form-item label="标题" style="padding: 0 16px;">
+        <s-input
+          placeholder="请输入标题"
+          :model-value="entity?.title"
+          @blur:value="setTitle($event)"
+          @keyup.enter="$event.target.blur()"
+        ></s-input>
+      </s-form-item>
 <!-- :current-component="currentComponent" -->
        <s-form-setter
           :class="$style.formSetter"
           :selected-node="entity"
           :annotaions="annotaions">
        </s-form-setter>
-       <s-share-data v-if="!inModule" :node="entity" />
+       <div style="padding: 0 16px;">
+        <s-share-data v-if="!inModule" :node="entity" />
+       </div>
     </el-form>
   </el-scrollbar>
 </template>
@@ -46,6 +56,7 @@ const {
    * @type {Vue.computed<Module>}
    */
   inModule,
+  setTitle,
 } = inject('$context');
 </script>
 
