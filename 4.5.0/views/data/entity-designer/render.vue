@@ -38,6 +38,14 @@
                 ></el-input>
               </el-tooltip>
             </el-form-item>
+            <el-form-item label="标题" prop="title" :rules="nameRules.title">
+              <el-input
+                placeholder="请输入标题"
+                v-model="entityModel.title"
+                @keyup.enter="$event.target.blur()"
+                :class="$style.fixedwidthinput"
+              ></el-input>
+            </el-form-item>
 
             <el-form-item label="系统属性">
               <div :class="$style.systemwrap" class="checkBox">
