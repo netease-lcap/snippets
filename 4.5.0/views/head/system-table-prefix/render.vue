@@ -15,7 +15,7 @@
         <el-form v-if="props.position === 'preference' && systemTablePrefixType === SystemTablePrefixTypeEnum.custom" :class="$style.form"
           :model="systemTablePrefix"
         >
-          <el-form-item ref="systemTablePrefixFormItem" prop="value" :rules="rules.systemTablePrefix" style="margin-bottom: 0">
+          <el-form-item ref="systemTablePrefixFormItem" prop="value" :rules="rules.systemTablePrefix">
             <el-input
               v-model="systemTablePrefix.value"
               placeholder="请输入前缀" maxlength="10"
@@ -112,7 +112,6 @@ const {
 }
 .root[position="preference"] .customRadio {
   align-items: flex-start;
-  height: auto;
 }
 .root[position="preference"] .form {
   margin-top: 6px;
